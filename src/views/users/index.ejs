@@ -4,48 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories List</title>
+    <title>Users List</title>
     <style>
-        .category-container h2 {
-            color: #333;
-        }
-
-        .category-container ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .category-container li {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .category-container p {
-            margin: 5px 0;
-        }
-
-        a {
-            text-decoration: none;
-            color: #333;
-        }
+        /* You can use the same style or modify as needed */
     </style>
 </head>
 
 <body>
-    <div class="category-container">
-        <h2>カテゴリー一覧</h2>
-        <a href="/categories/new">カテゴリー追加</a>
+    <div class="user-container">
+        <h2>ユーザー一覧</h2>
+        <a href="/users/new">ユーザー追加</a>
         <ul>
-            <% categories.forEach(function(category) { %>
+            <% users.forEach(function(user) { %>
                 <li>
-                    <p><strong>Title:</strong>
-                        <%= category.title %>
+                    <p><strong>Name:</strong>
+                        <%= user.name %>
                     </p>
-                    <p><strong>Created At:</strong>
-                        <%= new Date(category.created_at).toLocaleString() %>
+                    <p><strong>Email:</strong>
+                        <%= user.email %>
+                    </p>
+                    <p><strong>Joined:</strong>
+                        <%= new Date(user.created_at).toLocaleString() %>
                     </p>
                 </li>
                 <% }); %>
