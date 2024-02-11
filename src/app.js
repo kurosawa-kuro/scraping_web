@@ -5,31 +5,25 @@ require('dotenv').config();
 
 // Application Setup
 const app = express();
-const port = 3000;
-
-// Custom Modules
-
-const scrapeAndSaveYoutubeChannels = require('../lib/api/scrapeAndSaveYoutubeChannels.js');
-const scrapeAndSaveMangaTitles = require('../lib/api/scrapeAndSaveMangaTitles');
-const retrieveAndPrintTop = require('../lib/retrieveAndPrintTop');
+const port = 3000 || process.env.PORT;
 
 // View Engine Setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+const { fetchTodosWithRelation } = require('./lib/api/');
+
 // Route Handlers
 async function handleRootRequest(req, res) {
     try {
-        await scrapeAndSaveYoutubeChannels();
-        await scrapeAndSaveMangaTitles();
-        const result = await retrieveAndPrintTop();
-        // console.log('result:', result);
-        res.render('index', { result });
+        const todos = await fetchTodosWithRelation();
+        res.render('index', { todos });
     } catch (error) {
         console.error('Error handling root request:', error);
         res.status(500).send('Server error');
     }
 }
+
 
 // Routes
 app.get('/', handleRootRequest);
