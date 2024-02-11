@@ -1,51 +1,44 @@
 const request = require('supertest');
-const { app } = require('../app'); // Adjust this path to correctly import your Express app
-const dbPool = require('..//lib/database'); // Adjust this path to correctly import your dbPool
+const { app } = require('../app'); // Ensure this path is correct
+const dbPool = require('../lib/database'); // Corrected path
+
+const testUserName = 'Test User';
+const testCategoryTitle = 'Test Title';
+
+async function insertTestData() {
+    await dbPool.query('INSERT INTO users (name) VALUES ($1)', [testUserName]);
+}
+
+async function cleanUpTestData() {
+    await dbPool.query('DELETE FROM users WHERE name = $1', [testUserName]);
+    await dbPool.query('DELETE FROM categories WHERE title = $1', [testCategoryTitle]);
+}
 
 describe('GET /users', () => {
-    beforeAll(async () => {
-        // Optionally insert test data into the test database
-        await dbPool.query('INSERT INTO users (name) VALUES ($1)', ['Test User']);
-    });
+    beforeAll(insertTestData);
+    afterAll(cleanUpTestData);
 
-    afterAll(async () => {
-        // Clean up: delete test data from the test database
-        await dbPool.query('DELETE FROM users WHERE name = $1', ['Test User']);
-    });
-
-    it('responds with the users page', async () => {
+    it('responds with the users page, including the test user', async () => {
         const response = await request(app).get('/users');
 
         expect(response.statusCode).toBe(200);
-        // Make more specific assertions based on the output of your /users route
-        expect(response.text).toContain('Test User');
+        expect(response.text).toContain(testUserName);
     });
-
-    // Additional tests as needed
 });
 
 describe('POST /categories', () => {
-    // Cleanup test data before and after tests to ensure test isolation
-    beforeEach(async () => {
-        await dbPool.query('DELETE FROM categories WHERE title = $1', ['Test Title']);
-    });
-
-    afterEach(async () => {
-        await dbPool.query('DELETE FROM categories WHERE title = $1', ['Test Title']);
-    });
+    beforeEach(() => cleanUpTestData()); // Using the centralized cleanup function
+    afterEach(() => cleanUpTestData());
 
     it('should create a new category and redirect', async () => {
-        const title = 'Test Title';
         const response = await request(app)
             .post('/categories')
-            .send({ title });
+            .send({ title: testCategoryTitle });
 
-        // Validate the response and redirection
-        expect(response.statusCode).toBe(302); // Assuming redirection happens upon successful creation
+        expect(response.statusCode).toBe(302); // Check for redirection
 
-        // Verify the record was inserted into the database
-        const result = await dbPool.query('SELECT * FROM categories WHERE title = $1', ['Test Title']);
-        expect(result.rows.length).toBeGreaterThan(0); // Ensure at least one record was found
-        expect(result.rows[0].title).toBe(title);
+        const result = await dbPool.query('SELECT * FROM categories WHERE title = $1', [testCategoryTitle]);
+        expect(result.rows).toHaveLength(1);
+        expect(result.rows[0].title).toBe(testCategoryTitle);
     });
 });
