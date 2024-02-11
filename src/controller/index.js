@@ -1,6 +1,6 @@
 // src/controller/index.js
 
-const { fetchTodosWithRelation, fetchCategories, postCategory, fetchUsers, postUser } = require('../model/'); // Adjust the path as necessary
+const { fetchTodosWithRelation, fetchCategories, postCategory, fetchUsers, postUser, postTodosWithRelation } = require('../model/'); // Adjust the path as necessary
 
 const logError = (error, operation) => {
     console.error(`Error during ${operation}:`, error);
@@ -71,6 +71,21 @@ module.exports = (app) => {
         try {
             const todos = await fetchTodosWithRelation();
             res.render('index', { todos });
+        } catch (error) {
+            logError(error, 'handling root request');
+            sendServerError(res);
+        }
+    });
+
+    app.get('/todos/new', (req, res) => {
+        res.render('todos/new');
+    });
+
+    app.post('/todos', async (req, res) => {
+        try {
+            const { title } = req.body;
+            await postTodosWithRelation(title, 1, 1);
+            res.redirect('/');
         } catch (error) {
             logError(error, 'handling root request');
             sendServerError(res);

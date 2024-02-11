@@ -95,4 +95,4 @@ JOIN
 JOIN 
     categories c ON tc.category_id = c.id
 ORDER BY 
-    u.name, t.title, c.title;
+    t.created_at ASC;

@@ -40,7 +40,7 @@ async function fetchTodosWithRelation() {
             u.name AS user_name, 
             t.title AS todo_title, 
             c.title AS category_title, 
-            t.created_at AS todo_created_at
+            t.created_at  AS todo_created_at
         FROM 
             users u
         JOIN 
@@ -50,7 +50,8 @@ async function fetchTodosWithRelation() {
         JOIN 
             categories c ON tc.category_id = c.id
         ORDER BY 
-            u.name, t.title, c.title
+            t.id desc,
+            t.created_at asc;
     `;
     return await executeQuery(query);
 }

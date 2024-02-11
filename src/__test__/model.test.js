@@ -71,6 +71,23 @@ describe('API Integration Tests', () => {
         });
     });
 
+    describe('Todo Operations with Relations', () => {
+        it('inserts a new todo with relation successfully', async () => {
+            const title = 'Test Todo ' + Date.now();
+            const user = { name: "user1" };
+            const user_id = await postUser(user.name);
+            const category = { title: "category1" };
+            const category_id = await postCategory(category.title);
+            await postTodosWithRelation(title, user_id, category_id);
+            const todos = await fetchTodosWithRelation();
+            const newTodo = todos.find(todo => todo.todo_title === title);
+            expect(newTodo).toBeDefined();
+            expect(newTodo.todo_title).toEqual(title);
+            expect(newTodo.category_title).toEqual(category.title);
+            expect(newTodo.user_name).toEqual(user.name);
+        });
+    });
+
     // Implement helper functions for cleanup
     async function deleteUser(userId) {
         // Your logic to delete a user
