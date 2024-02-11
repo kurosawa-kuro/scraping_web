@@ -1,6 +1,17 @@
 const dbPool = require('../database'); // Ensure the path is correct
 require('dotenv').config();
 
+async function fetchUsers() {
+    try {
+        const query = 'SELECT * FROM todos';
+        const result = await dbPool.query(query);
+        return result.rows;
+    } catch (error) {
+        console.error('Failed to fetch todos:', error);
+        return []; // Return an empty array on error
+    }
+}
+
 async function fetchTodos() {
     try {
         const query = 'SELECT * FROM todos';
