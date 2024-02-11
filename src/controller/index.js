@@ -1,6 +1,6 @@
 // src/controller/index.js
 
-const { fetchTodosWithRelation, fetchCategories, postCategory, fetchUsers } = require('../model/'); // Adjust the path as necessary
+const { fetchTodosWithRelation, fetchCategories, postCategory, fetchUsers, postUser } = require('../model/'); // Adjust the path as necessary
 
 const logError = (error, operation) => {
     console.error(`Error during ${operation}:`, error);
@@ -14,6 +14,23 @@ module.exports = (app) => {
     app.get('/users', async (req, res) => {
         try {
             const users = await fetchUsers();
+            res.render('users/index', { users }); // Pass the users to the view
+        } catch (error) {
+            logError(error, 'handling users request');
+            sendServerError(res);
+        }
+    });
+
+    // Display page for adding a new category
+    app.get('/users/new', (req, res) => {
+        res.render('users/new');
+    });
+
+    app.post('/users', async (req, res) => {
+        try {
+            const { name } = req.body;
+            console.log("name" + name);
+            const users = await postUser(name);
             res.render('users/index', { users }); // Pass the users to the view
         } catch (error) {
             logError(error, 'handling users request');
