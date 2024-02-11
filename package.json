@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
+    ]
+  },
   "scripts": {
     "dev": "nodemon ./src/app.js",
     "test": "jest"

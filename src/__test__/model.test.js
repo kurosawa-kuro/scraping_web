@@ -1,9 +1,3 @@
-process.env.DB_USER = 'hofokkkh';
-process.env.DB_HOST = 'floppy.db.elephantsql.com'
-process.env.DB_NAME = 'hofokkkh'
-process.env.DB_PASSWORD = '8bJ65b10ITDccn1vtc4TXcdKfRWvCtVE'
-
-// Assuming dotenv is used for environment variables
 require('dotenv').config();
 
 const { fetchCategories, postCategory, fetchUsers, postUser, postTodosWithRelation, fetchTodosWithRelation } = require('../model');
