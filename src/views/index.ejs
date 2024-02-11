@@ -6,31 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List with Categories</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 20px;
-        }
-
         .todo-container {
-            width: 80%;
-            max-width: 600px;
+            margin-left: 250px;
+            /* Offset for the sidebar width */
+            width: calc(100% - 250px);
+            /* Adjust width, accounting for the sidebar */
+            min-width: 800px;
+            /* Or whatever max width you prefer */
+            padding: 20px;
         }
 
-        h2 {
+        .todo-container h2 {
             color: #333;
         }
 
-        ul {
+        .todo-container ul {
             list-style-type: none;
             padding: 0;
         }
 
-        li {
+        .todo-container li {
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             margin-bottom: 10px;
@@ -38,7 +33,7 @@
             border-radius: 5px;
         }
 
-        p {
+        .todo-container p {
             margin: 5px 0;
         }
     </style>
@@ -46,7 +41,7 @@
 
 <body>
     <div class="todo-container">
-        <h2>Todo List</h2>
+
         <ul>
             <% todos.forEach(function(todo) { %>
                 <li>

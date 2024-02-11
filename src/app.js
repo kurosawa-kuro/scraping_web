@@ -1,15 +1,19 @@
 // Dependencies
 const express = require('express');
 const path = require('path');
+const expressLayouts = require('express-ejs-layouts'); // express-ejs-layoutsをインポート
 require('dotenv').config();
 
 // Application Setup
 const app = express();
-const port = 3000 || process.env.PORT;
+const port = process.env.PORT || 3000;
 
 // View Engine Setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(expressLayouts); // express-ejs-layoutsを使用するように設定
+
+app.set('layout', 'layouts/layout'); // デフォルトのレイアウトを設定
 
 const { fetchTodosWithRelation } = require('./lib/api/');
 
@@ -23,7 +27,6 @@ async function handleRootRequest(req, res) {
         res.status(500).send('Server error');
     }
 }
-
 
 // Routes
 app.get('/', handleRootRequest);
