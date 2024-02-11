@@ -89,9 +89,10 @@ module.exports = (app) => {
 
     app.post('/todos', async (req, res) => {
         try {
-            const { title, user_id } = req.body;
+            const { title, user_id, category_ids } = req.body;
+            console.log("req.body " + JSON.stringify(req.body));
             console.log("user_id " + user_id);
-            await postTodosWithRelation(title, user_id, 1);
+            await postTodosWithRelation(title, user_id, category_ids);
             res.redirect('/');
         } catch (error) {
             logError(error, 'handling root request');

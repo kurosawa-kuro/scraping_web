@@ -36,22 +36,26 @@ async function fetchTodos() {
 
 async function fetchTodosWithRelation() {
     const query = `
-        SELECT 
-            u.name AS user_name, 
-            t.title AS todo_title, 
-            c.title AS category_title, 
-            t.created_at  AS todo_created_at
-        FROM 
-            users u
-        JOIN 
-            todos t ON u.id = t.user_id
-        JOIN 
-            todo_categories tc ON t.id = tc.todo_id
-        JOIN 
-            categories c ON tc.category_id = c.id
-        ORDER BY 
-            t.id desc,
-            t.created_at asc;
+    SELECT 
+    u.name AS user_name, 
+    t.title AS todo_title, 
+    string_agg(c.id || ':' || c.title, '; ') AS category_titles,  -- Combine category IDs and titles
+    t.created_at AS todo_created_at
+FROM 
+    users u
+JOIN 
+    todos t ON u.id = t.user_id
+JOIN 
+    todo_categories tc ON t.id = tc.todo_id
+JOIN 
+    categories c ON tc.category_id = c.id
+GROUP BY 
+    t.id, u.name, t.title, t.created_at  -- Group by necessary fields
+
+ORDER BY 
+	t.id desc,
+    t.created_at ASC;
+
     `;
     return await executeQuery(query);
 }
@@ -63,7 +67,11 @@ async function postTodosWithRelation(title, user_id, category_id) {
         const todoInsertQuery = 'INSERT INTO todos (title, user_id) VALUES ($1, $2) RETURNING id';
         const todoId = await executeInsertReturnId(todoInsertQuery, [title, user_id], client);
         const categoryInsertQuery = 'INSERT INTO todo_categories (todo_id, category_id) VALUES ($1, $2)';
-        await client.query(categoryInsertQuery, [todoId, category_id]);
+
+        // category_idsは配列なので下記をループ対応に変更
+        for (const id of category_id) {
+            await client.query(categoryInsertQuery, [todoId, id]);
+        }
         await client.query('COMMIT');
     } catch (error) {
         await client.query('ROLLBACK');

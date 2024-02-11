@@ -60,6 +60,15 @@
             </select>
             <!-- Todo Title -->
             <input type="text" name="title" placeholder="Todo title" required>
+            <!-- Categories Multi-Select Dropdown -->
+            <select name="category_ids" multiple required>
+                <!-- Server-side code should generate these options -->
+                <% categories.forEach(function(category) { %>
+                    <option value="<%= category.id %>">
+                        <%= category.title %>
+                    </option>
+                    <% }); %>
+            </select>
             <!-- Submit Button -->
             <button type="submit">Add</button>
         </form>
