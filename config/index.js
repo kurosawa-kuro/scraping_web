@@ -9,6 +9,4 @@ const youtubeConfig = {
     part: 'snippet',
 };
 
-const siteUrl = process.env.SITE_URL;
-
-module.exports = { youtubeConfig, siteUrl };
+module.exports = { youtubeConfig };

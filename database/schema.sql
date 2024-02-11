@@ -1,6 +1,20 @@
--- channels というテーブルを作成 
--- id,name,created_at,updated_at というカラムを持つ
--- name はユニークである
+DROP TABLE IF EXISTS channels_master;
+
+CREATE TABLE channels_master (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL, -- NULLを許容しないように変更
+  channel_id VARCHAR(2048) NOT NULL, -- channelId をスネークケースに変更
+  type VARCHAR(255),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO channels_master (name, channel_id, type) VALUES
+('ましろ【FXトレーダー】', 'UC04oPzeoQiTne13IunjNT2g', 'FX'),
+('正太郎FXちゃんねる', 'UC0qRlg0U8_6cMBvFJf0p9Fw', 'FX'),
+('百獣のFX', 'UCjzTT89KACPke5r_lV-DHjw', 'FX');
+
+
 Drop TABLE IF EXISTS channels;
 
 CREATE TABLE channels (
@@ -11,6 +25,17 @@ CREATE TABLE channels (
   url VARCHAR(2048) NOT NULL, 
   thumbnailUrl VARCHAR(255) NOT NULL,
   publishedAt TIMESTAMP NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS sites_master;
+
+CREATE TABLE sites_master (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL, -- NULLを許容しないように変更
+  url VARCHAR(255) NOT NULL, -- NULLを許容しないように変更
+  type VARCHAR(255),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
