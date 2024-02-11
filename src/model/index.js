@@ -11,6 +11,14 @@ async function executeQuery(query, params = []) {
     }
 }
 
+async function executeInsertReturnId(query, params = []) {
+    const rows = await executeQuery(query, params);
+    if (rows.length > 0) {
+        return rows[0].id;
+    }
+    throw new Error("No rows returned by the insert operation.");
+}
+
 async function fetchUsers() {
     const query = 'SELECT * FROM users';
     return await executeQuery(query);
@@ -18,8 +26,7 @@ async function fetchUsers() {
 
 async function postUser(name) {
     const insertQuery = 'INSERT INTO users (name) VALUES ($1) RETURNING id';
-    const users = await executeQuery(insertQuery, [name]);
-    return users[0].id;
+    return await executeInsertReturnId(insertQuery, [name]);
 }
 
 async function fetchTodos() {
@@ -53,8 +60,7 @@ async function postTodosWithRelation(title, user_id, category_id) {
     try {
         await client.query('BEGIN');
         const todoInsertQuery = 'INSERT INTO todos (title, user_id) VALUES ($1, $2) RETURNING id';
-        const todoRes = await client.query(todoInsertQuery, [title, user_id]);
-        const todoId = todoRes.rows[0].id;
+        const todoId = await executeInsertReturnId(todoInsertQuery, [title, user_id], client);
         const categoryInsertQuery = 'INSERT INTO todo_categories (todo_id, category_id) VALUES ($1, $2)';
         await client.query(categoryInsertQuery, [todoId, category_id]);
         await client.query('COMMIT');
@@ -74,8 +80,7 @@ async function fetchCategories() {
 
 async function postCategory(title) {
     const insertQuery = 'INSERT INTO categories (title) VALUES ($1) RETURNING id';
-    const categories = await executeQuery(insertQuery, [title]);
-    return categories[0].id;
+    return await executeInsertReturnId(insertQuery, [title]);
 }
 
 module.exports = {
