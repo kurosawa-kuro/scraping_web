@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scraping Result Page</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        h2,
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .container {
+            width: 50%;
+        }
+
+        .container ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Channels</h2>
+        <ul>
+            <% result.channels.forEach(function(channel) { %>
+                <li>
+                    <img src="<%= channel.thumbnailurl %>" alt="Thumbnail" style="width: 100px; height: auto;">
+                    <p>Channel Name: <%= channel.channelname %>
+                    </p>
+                    <p>Title: <a href="<%= channel.url %>" target="_blank">
+                            <%= channel.title %>
+                        </a></p>
+                    <p>Published At: <%= new Date(channel.publishedat).toLocaleString("en-US", { year: 'numeric' ,
+                            month: 'long' , day: 'numeric' , hour: '2-digit' , minute: '2-digit' , second: '2-digit' })
+                            %>
+                    </p>
+                </li>
+                <% }); %>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h2>Sites</h2>
+        <ul>
+            <% result.sites.forEach(function(site) { %>
+                <li>
+                    <img src="<%= site.thumbnailurl %>" alt="Thumbnail" style="width: 100px; height: auto;">
+                    <p>Title: <a href="<%= site.url %>" target="_blank">
+                            <%= site.title %>
+                        </a></p>
+                    <p>Published At: <%= new Date(site.publishedat).toLocaleString("en-US", { year: 'numeric' ,
+                            month: 'long' , day: 'numeric' , hour: '2-digit' , minute: '2-digit' , second: '2-digit' })
+                            %>
+                    </p>
+                </li>
+                <% }); %>
+        </ul>
+    </div>
+
+</body>
+
+</html>
