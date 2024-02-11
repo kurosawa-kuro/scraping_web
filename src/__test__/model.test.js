@@ -6,7 +6,7 @@ process.env.DB_PASSWORD = '8bJ65b10ITDccn1vtc4TXcdKfRWvCtVE'
 // Assuming dotenv is used for environment variables
 require('dotenv').config();
 
-const { fetchCategories, postCategory, fetchUsers, postUser, postTodosWithRelation, fetchTodosWithRelation } = require('../lib/api');
+const { fetchCategories, postCategory, fetchUsers, postUser, postTodosWithRelation, fetchTodosWithRelation } = require('../model');
 
 describe('API Integration Tests', () => {
     let newUserId, newCategoryId;

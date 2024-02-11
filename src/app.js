@@ -15,7 +15,7 @@ app.use(expressLayouts); // Set up express-ejs-layouts
 app.set('layout', 'layouts/layout'); // Set default layout
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
-const { fetchTodosWithRelation, fetchCategories, postCategory } = require('./lib/api/');
+const { fetchTodosWithRelation, fetchCategories, postCategory } = require('./model/');
 
 // Route Handlers
 
@@ -40,7 +40,7 @@ app.post('/categories', async (req, res) => {
     try {
         const { title } = req.body;
         // Assume 'postCategory' is a function to add a category to the database
-        // This should be implemented in './lib/api/'
+        // This should be implemented in './model/'
         await postCategory(title);
         res.redirect('/categories');
     } catch (error) {

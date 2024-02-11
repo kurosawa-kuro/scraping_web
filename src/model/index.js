@@ -1,4 +1,4 @@
-const dbPool = require('../database'); // Ensure the path is correct
+const dbPool = require('../lib/database'); // Ensure the path is correct
 require('dotenv').config();
 
 async function executeQuery(query, params = []) {
