@@ -4,18 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List with Categories</title>
+    <title>Categories List</title>
     <style>
-        .todo-container h2 {
+        .category-container h2 {
             color: #333;
         }
 
-        .todo-container ul {
+        .category-container ul {
             list-style-type: none;
             padding: 0;
         }
 
-        .todo-container li {
+        .category-container li {
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             margin-bottom: 10px;
@@ -23,29 +23,29 @@
             border-radius: 5px;
         }
 
-        .todo-container p {
+        .category-container p {
             margin: 5px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
         }
     </style>
 </head>
 
 <body>
-    <div class="todo-container">
-
+    <div class="category-container">
+        <h2>カテゴリー一覧</h2>
+        <a href="/categories/new">カテゴリー追加</a>
         <ul>
-            <% todos.forEach(function(todo) { %>
+            <% categories.forEach(function(category) { %>
                 <li>
-                    <p><strong>User:</strong>
-                        <%= todo.user_name %>
-                    </p>
-                    <p><strong>Task:</strong>
-                        <%= todo.todo_title %>
-                    </p>
-                    <p><strong>Category:</strong>
-                        <%= todo.category_title %>
+                    <p><strong>Title:</strong>
+                        <%= category.title %>
                     </p>
                     <p><strong>Created At:</strong>
-                        <%= new Date(todo.todo_created_at).toLocaleString() %>
+                        <%= new Date(category.created_at).toLocaleString() %>
                     </p>
                 </li>
                 <% }); %>

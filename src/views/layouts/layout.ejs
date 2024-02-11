@@ -57,6 +57,22 @@
             padding: 10px;
             border-bottom: 1px solid #ddd;
         }
+
+
+        main {
+            margin-left: 250px;
+            /* Offset for the sidebar width */
+            width: calc(100% - 250px);
+            /* Adjust width, accounting for the sidebar */
+            min-width: 800px;
+            /* Or whatever max width you prefer */
+            padding: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+        }
     </style>
 </head>
 
@@ -66,7 +82,7 @@
         <ul>
             <li>ユーザー</li>
             <li>Todo</li>
-            <li>カテゴリ</li>
+            <li><a href="/categories">カテゴリ</a></li>
         </ul>
     </div>
     <main>

@@ -1,15 +1,14 @@
-const dbPool = require('../database'); // パスが正しいことを確認
+const dbPool = require('../database'); // Ensure the path is correct
 require('dotenv').config();
 
 async function fetchTodos() {
-
     try {
         const query = 'SELECT * FROM todos';
         const result = await dbPool.query(query);
         return result.rows;
-    }
-    catch (error) {
-        console.error('Failed to scrape manga titles:', error);
+    } catch (error) {
+        console.error('Failed to fetch todos:', error);
+        return []; // Return an empty array on error
     }
 }
 
@@ -36,8 +35,29 @@ async function fetchTodosWithRelation() {
         return result.rows;
     } catch (error) {
         console.error('Failed to fetch todos with relation:', error);
+        return []; // Return an empty array on error
     }
 }
 
+async function fetchCategories() {
+    try {
+        const query = 'SELECT * FROM categories ORDER BY title';
+        const result = await dbPool.query(query);
+        return result.rows;
+    } catch (error) {
+        console.error('Failed to fetch categories:', error);
+        return []; // Return an empty array on error
+    }
+}
 
-module.exports = { fetchTodos, fetchTodosWithRelation };
+async function postCategory(title) {
+    try {
+        const insertQuery = 'INSERT INTO categories (title) VALUES ($1)';
+        await dbPool.query(insertQuery, [title]);
+    } catch (error) {
+        console.error('Failed to post new category:', error);
+        throw error; // Rethrow the error after logging
+    }
+}
+
+module.exports = { fetchTodos, fetchTodosWithRelation, fetchCategories, postCategory };
