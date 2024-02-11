@@ -23,7 +23,7 @@ async function handleRootRequest(req, res) {
         await scrapeAndSaveYoutubeChannels();
         await scrapeAndSaveMangaTitles();
         const result = await retrieveAndPrintTop();
-        console.log('result:', result);
+        // console.log('result:', result);
         res.render('index', { result });
     } catch (error) {
         console.error('Error handling root request:', error);
