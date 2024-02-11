@@ -20,8 +20,8 @@ app.set('view engine', 'ejs');
 // Route Handlers
 async function handleRootRequest(req, res) {
     try {
-        await scrapeAndSaveYoutubeChannels();
-        await scrapeAndSaveMangaTitles();
+        // await scrapeAndSaveYoutubeChannels();
+        // await scrapeAndSaveMangaTitles();
         const result = await retrieveAndPrintTop();
         console.log('result:', result);
         res.render('index', { result });
