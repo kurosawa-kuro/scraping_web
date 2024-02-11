@@ -77,14 +77,21 @@ module.exports = (app) => {
         }
     });
 
-    app.get('/todos/new', (req, res) => {
-        res.render('todos/new');
+    app.get('/todos/new', async (req, res) => {
+        // ユーザーデータを'todos/new'に渡す
+        const users = await fetchUsers();
+        console.log("users" + users);
+
+        // ぁてごりーデータを'todos/new'に渡す
+        const categories = await fetchCategories();
+        res.render('todos/new', { users, categories });
     });
 
     app.post('/todos', async (req, res) => {
         try {
-            const { title } = req.body;
-            await postTodosWithRelation(title, 1, 1);
+            const { title, user_id } = req.body;
+            console.log("user_id " + user_id);
+            await postTodosWithRelation(title, user_id, 1);
             res.redirect('/');
         } catch (error) {
             logError(error, 'handling root request');

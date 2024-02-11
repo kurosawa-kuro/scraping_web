@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Category</title>
+    <title>Add New Todo</title>
     <style>
-        .category-container {
+        .todo-container {
             width: 80%;
             max-width: 400px;
             margin: 0 auto;
             padding-top: 50px;
         }
 
-        .category-container h2 {
+        .todo-container h2 {
             color: #333;
             text-align: center;
         }
@@ -25,6 +25,7 @@
         }
 
         input[type="text"],
+        select,
         button {
             padding: 10px;
             margin-bottom: 10px;
@@ -45,11 +46,22 @@
 </head>
 
 <body>
-    <div class="category-container">
-        <h2>Todo追加</h2>
+    <div class="todo-container">
+        <h2>Add New Todo</h2>
         <form action="/todos" method="POST">
-            <input type="text" name="title" placeholder="Todo" required>
-            <button type="submit">追加</button>
+            <!-- User Dropdown -->
+            <select name="user_id" required>
+                <!-- Server-side code should generate these options -->
+                <% users.forEach(function(user) { %>
+                    <option value="<%= user.id %>">
+                        <%= user.name %>
+                    </option>
+                    <% }); %>
+            </select>
+            <!-- Todo Title -->
+            <input type="text" name="title" placeholder="Todo title" required>
+            <!-- Submit Button -->
+            <button type="submit">Add</button>
         </form>
     </div>
 </body>
