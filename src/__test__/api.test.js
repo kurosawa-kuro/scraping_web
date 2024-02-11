@@ -30,7 +30,7 @@ describe('API Integration Tests', () => {
 
         it('inserts a new user successfully', async () => {
             const name = 'Test User ' + Date.now();
-            const user_id = await postUser(name);
+            user_id = await postUser(name);
             const users = await fetchUsers();
             const newUser = users.find(user => user.name === name);
             expect(newUser).toBeDefined();
@@ -51,7 +51,7 @@ describe('API Integration Tests', () => {
 
         it('inserts a new category successfully', async () => {
             const title = 'Test Category ' + Date.now();
-            const category_id = await postCategory(title);
+            category_id = await postCategory(title);
             const categories = await fetchCategories();
             const newCategory = categories.find(category => category.title === title);
             expect(newCategory).toBeDefined();
